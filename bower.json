@@ -1,0 +1,12 @@
+{
+  "name": "ng-paste-from-demo",
+  "homepage": "http://digiexam.github.io/ng-paste-from",
+  "authors": [
+    "(Kenneth Sundqvist <kenneth.sundqvist@digiexam.se>)"
+  ],
+  "license": "CC-BY-NC",
+  "private": true,
+  "devDependencies": {
+    "ng-paste-from": "DigiExam/ng-paste-from"
+  }
+}
