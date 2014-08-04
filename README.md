@@ -5,7 +5,7 @@ Directive to handle conversion of paste from Excel to scope, [demo](http://digie
 
 ## Example HTML
 
-	<textarea type="text" 
+	<textarea
 		id="excel-paste"
 		ng-paste-from="users" 
 		ng-paste-from-format="['name', 'email']" 
