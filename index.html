@@ -23,7 +23,7 @@
 			<h2>Demo</h2>
 
 			<div style="margin-bottom: 20px;">
-				Paste from Excel here: 
+				Copy and paste from Excel here: 
 				<textarea type="text" 
 					ng-paste-from="users" 
 					ng-paste-from-format="['name', 'email']" 
@@ -32,6 +32,8 @@
 			</div>
 
 			<p>The format should be name e-mail address</p>
+
+			<p style="color: red;" ng-repeat="e in errors">{{e}}</p>
 
 			<table style="width: 400px; text-align: left;">
 				<tr>
