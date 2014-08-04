@@ -3,40 +3,97 @@
 
   ngPasteFrom = angular.module("ngPasteFrom", []);
 
-  ngPasteFrom.directive("ngPasteFrom", function() {
+  ngPasteFrom.constant("ngPasteFromErrors", {
+    invalidColumnLength: "NGPASTEFROM_INVALID_COLUMN_LENGTH",
+    failedValidation: "NGPASTEFROM_FAILED_VALIDATION"
+  }).directive("ngPasteFrom", function() {
     return {
-      restrict: "E",
-      replace: true,
-      template: '<p>I like turtles</p>',
+      restrict: "A",
       scope: {
-        time: "=",
-        disabled: "="
+        ngPasteFrom: "=",
+        ngPasteFromFormat: "=",
+        ngPasteFromOnValidate: "=",
+        ngPasteFromOnError: "="
       },
       link: function($scope, element, attrs) {
-        var _i, _j, _results, _results1;
-        $scope.minutes = (function() {
-          _results = [];
-          for (_i = 0; _i <= 59; _i++){ _results.push(_i); }
-          return _results;
-        }).apply(this);
-        return $scope.hours = (function() {
-          _results1 = [];
-          for (_j = 0; _j <= 23; _j++){ _results1.push(_j); }
-          return _results1;
-        }).apply(this);
-      },
-      controller: function($scope, $filter) {
-        var split;
-        $scope.hour = "00";
-        $scope.minute = "00";
-        if ($scope.time != null) {
-          split = $scope.time.split(":");
-          $scope.hour = split[0];
-          $scope.minute = split[1];
+        if ($scope.ngPasteFromFormat == null) {
+          console.error("Missing required attribute ngPasteFromFormat.");
         }
-        $scope.updateScope = function() {};
-        $scope.$watch("hour", $scope.updateScope);
-        return $scope.$watch("minute", $scope.updateScope);
+        element.on("paste", function(event) {
+          element.val("");
+          return $scope.hasPasted = true;
+        });
+        return element.on("keyup", function(event) {
+          if ($scope.hasPasted) {
+            $scope.$apply(function() {
+              return $scope.pasteData = element.val();
+            });
+            $scope.hasPasted = false;
+          }
+          return element.val("");
+        });
+      },
+      controller: function($scope, $filter, ngPasteFromErrors) {
+        var columnsToObject, defaultOnError, defaultOnValidate, splitToColumns, splitToRows;
+        defaultOnError = function(error, index) {
+          return console.error("ngPasteFromError: index " + index + " error: " + error);
+        };
+        defaultOnValidate = function(object, index) {
+          return true;
+        };
+        if ($scope.ngPasteFromOnError == null) {
+          $scope.ngPasteFromOnError = defaultOnError;
+        }
+        if ($scope.ngPasteFromOnValidate == null) {
+          $scope.ngPasteFromOnValidate = defaultOnValidate;
+        }
+        splitToRows = function(data) {
+          var lineEnding, lineEndingsRegExp;
+          lineEndingsRegExp = /\r\n|\n\r|\n|\r/g;
+          lineEnding = "\n";
+          return data.replace(lineEndingsRegExp, lineEnding).split(lineEnding);
+        };
+        splitToColumns = function(row) {
+          var separatorChar;
+          separatorChar = "\t";
+          return row.split(separatorChar);
+        };
+        columnsToObject = function(columns) {
+          var c, format, i, o, _i, _len;
+          o = {};
+          format = $scope.ngPasteFromFormat;
+          for (i = _i = 0, _len = columns.length; _i < _len; i = ++_i) {
+            c = columns[i];
+            o[format[i]] = c;
+          }
+          return o;
+        };
+        $scope.processPasteData = function(data) {
+          var columns, i, o, r, result, rows, _i, _len;
+          rows = splitToRows(data);
+          result = [];
+          for (i = _i = 0, _len = rows.length; _i < _len; i = ++_i) {
+            r = rows[i];
+            columns = splitToColumns(r);
+            if (columns.length !== $scope.ngPasteFromFormat.length) {
+              $scope.ngPasteFromOnError(ngPasteFromErrors.invalidColumnLength, i);
+              continue;
+            }
+            o = columnsToObject(columns);
+            if ($scope.ngPasteFromOnValidate(o, i)) {
+              result.push(o);
+            } else {
+              $scope.ngPasteFromOnError(ngPasteFromErrors.failedValidation, i);
+            }
+          }
+          return $scope.ngPasteFrom = result;
+        };
+        return $scope.$watch("pasteData", function() {
+          if (($scope.pasteData != null) && 0 < $scope.pasteData.length) {
+            $scope.processPasteData($scope.pasteData);
+            return $scope.pasteData = null;
+          }
+        });
       }
     };
   });
