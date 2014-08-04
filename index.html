@@ -3,6 +3,7 @@
 <head>
 	<title>ng-paste-from demo</title>
 	<meta charset="utf-8">
+	<link href="css/main.css" rel="stylesheet" />
 </head>
 <body>
 
@@ -23,17 +24,15 @@
 			<h2>Demo</h2>
 
 			<div style="margin-bottom: 20px;">
-				Copy and paste from Excel here: 
+				<label for="excel-paste">Paste from Excel in this box: </label>
 				<textarea type="text" 
+					id="excel-paste"
 					ng-paste-from="users" 
 					ng-paste-from-format="['name', 'email']" 
 					ng-paste-from-on-validate="onValidate"
 					ng-paste-from-on-error="onError"></textarea>
 			</div>
 
-			<p>The format should be name e-mail address</p>
-
-			<p style="color: red;" ng-repeat="e in errors">{{e}}</p>
 
 			<table style="width: 400px; text-align: left;">
 				<tr>
@@ -45,6 +44,15 @@
 					<td>{{u.email}}</td>
 				</tr>
 			</table>
+
+			<hr />
+			<h2>Help Description</h2>
+
+			<p>The format should be name e-mail address, see:</p>
+
+			<img src="./img/example-copy.png" alt="Example" />
+			
+			<p style="color: red;" ng-repeat="e in errors">{{e}}</p>
 		</div>
 	</div>
 
