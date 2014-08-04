@@ -1,83 +1,56 @@
 <!doctype html>
 <html ng-app="app">
 <head>
-	<title>ng-annotate-text demo</title>
+	<title>ng-paste-from demo</title>
 	<meta charset="utf-8">
-
-	<!-- ng-annotate-text -->
-	<link href="lib/ng-annotate-text-latest.min.css" rel="stylesheet" />
-	<!--<link href="lib/ng-annotate-text-unstable.min.css" rel="stylesheet" />-->
-
-	<!-- demo -->
-	<link href="dist/main.min.css" rel="stylesheet" />
-
 </head>
 <body>
 
 	<div class="container" ng-controller="MainController">
-
 		<div class="header">
-			<h1>ng-annotate-text demo</h1>
+			<h1>ng-paste-from demo</h1>
 
 			<p>
-				This is a demo implementation of
-				<a href="https://github.com/DigiExam/ng-annotate-text/">ng-annotate-text</a>,
-				an AngularJS directive for annotating text.
+				This is a demo implementation of <a href="https://github.com/DigiExam/ng-paste-from/">ng-paste-from</a>
 			</p>
 
 			<p>
-				<a href="https://github.com/DigiExam/ng-annotate-text/tree/gh-pages">Here is the source code</a>
-				for this demo.
+				<a href="https://github.com/DigiExam/ng-paste-from/tree/gh-pages">Here is the source code</a> for this demo.
 			</p>
-
-			<p style="display: none"><button ng-click="clearPopups()">Clear popups</button></p>
 		</div>
 
-		<div class="example" ng-repeat="text in demoTexts">
-			<div class="example-source">
-				<h2>Example</h2>
+		<div>
+			<h2>Demo</h2>
 
-				<ng-annotate-text
-					class="example-source-text"
-					readonly="false"
-					popup-controller="'AnnotationController'"
-					popup-template-url="'partials/annotation.html'"
-					tooltip-controller="'AnnotationController'"
-					tooltip-template-url="'partials/annotation-tooltip.html'"
-					annotations="annotations[$index]"
-					on-annotate="onAnnotate"
-					on-annotate-error="onAnnotateError"
-					on-popup-show="onPopupShow"
-					text="text">
-				</ng-annotate-text>
+			<div style="margin-bottom: 20px;">
+				Paste from Excel here: 
+				<textarea type="text" 
+					ng-paste-from="users" 
+					ng-paste-from-format="['name', 'email']" 
+					ng-paste-from-on-validate="onValidate"
+					ng-paste-from-on-error="onError"></textarea>
 			</div>
 
-			<div class="example-summary">
-				<h3>Annotation summary</h3>
+			<p>The format should be name e-mail address</p>
 
-				<ul>
-					<li ng-repeat="a in annotationsAsFlatList()">
-						{{a.data.comment}}
-						<span ng-if="a.data.points">
-							({{a.data.points}}
-							<ng-pluralize
-									count="a.data.points"
-									when="{'-1': 'point', '1': 'point', 'other': 'points'}"></ng-pluralize>)
-						</span>
-					</li>
-				</ul>
-			</div>
+			<table style="width: 400px; text-align: left;">
+				<tr>
+					<th>Name</th>
+					<th>E-mail Address</th>
+				</tr>
+				<tr ng-repeat="u in users">
+					<td>{{u.name}}</td>
+					<td>{{u.email}}</td>
+				</tr>
+			</table>
 		</div>
-
 	</div>
 
 	<!-- Demo dependencies -->
-	<script src="lib/jquery.js"></script>
 	<script src="lib/angular.js"></script>
 
 	<!-- ng-annotate-text -->
-	<script src="lib/ng-annotate-text-latest.min.js"></script>
-	<!--<script src="lib/ng-annotate-text-unstable.min.js"></script>-->
+	<script src="lib/ng-paste-from-latest.min.js"></script>
 
 	<!-- demo -->
 	<script src="dist/main.min.js"></script>

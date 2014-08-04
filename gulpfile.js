@@ -29,7 +29,7 @@ gulp.task("watch", function() {
 
 gulp.task("serve", function() {
 	r.connect.server({
-		port: 3000,
+		port: 3001,
 		root: ".",
 		livereload: {
 			ignore: [
