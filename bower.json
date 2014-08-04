@@ -1,0 +1,31 @@
+{
+  "name": "ng-paste-from",
+  "version": "0.1.0",
+  "homepage": "https://github.com/DigiExam/ng-paste-from",
+  "authors": [    
+    "(Robin Andersson <robin.andersson@digiexam.se>)",
+    "(Kenneth Sundqvist <kenneth.sundqvist@digiexam.se>)"
+  ],
+  "description": "An AngularJS directive to assist with pasting from Excel",
+  "keywords": [
+    "angularjs",
+    "excel",
+    "paste"
+  ],
+  "license": "MIT",
+  "private": true,
+  "main": [
+    "./dist/ng-paste-from-latest.min.js"
+  ],
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "dev",
+    "/js/"
+  ],
+  "dependencies": {
+    "angular": "~1.2.6"
+  }
+}
