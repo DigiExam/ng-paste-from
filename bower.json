@@ -6,7 +6,7 @@
     "(Robin Andersson <robin.andersson@digiexam.se>)",
     "(Kenneth Sundqvist <kenneth.sundqvist@digiexam.se>)"
   ],
-  "description": "An AngularJS directive to assist with pasting from Excel",
+	"description": "AngularJS directive that handles conversion of paste from Excel to scope",
   "keywords": [
     "angularjs",
     "excel",
