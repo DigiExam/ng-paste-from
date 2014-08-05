@@ -1,7 +1,5 @@
-ngPasteFrom = angular.module "ngPasteFrom", []
-
-ngPasteFrom
-	.constant "ngPasteFromErrors", 
+angular.module "ngPasteFrom", []
+	.constant "ngPasteFromErrors",
 		invalidColumnLength: "NGPASTEFROM_INVALID_COLUMN_LENGTH"
 		failedValidation: "NGPASTEFROM_FAILED_VALIDATION"
 	.directive "ngPasteFrom", ->
