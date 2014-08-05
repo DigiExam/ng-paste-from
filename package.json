@@ -1,6 +1,6 @@
 {
   "name": "ng-paste-from",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "description": "AngularJS directive that converts pasted plain text tabular data to an array of arrays/objects on the scope.",
   "repository": {
     "type": "git",
