@@ -1,13 +1,7 @@
 angular.module("app", ["ngPasteFrom"])
 	.controller "MainController", ($scope, ngPasteFromErrors) ->
 		$scope.errors = []
-
-		$scope.users = [
-			{
-				name: "Robin Andersson"
-				email: "robin.andersson@digiexam.se"
-			}
-		]
+		$scope.users = []
 
 		$scope.onError = (error, index) ->
 			if error is ngPasteFromErrors.invalidColumnLength
