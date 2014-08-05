@@ -16,23 +16,11 @@ angular.module "ngPasteFrom", []
 			if not $scope.ngPasteFromFormat?
 				console.error "Missing required attribute ngPasteFromFormat."
 
-			# NOTE: This solution with paste + keyup kind of works, but it is not optimal.
-			# It causes the data to show and not get processed until key up.
-			element.on "paste", ->
-				element.val ""
-				$scope.hasPasted = true
+			element.on "paste", $scope.pasteEvent
+			element.on "keyup", $scope.clearSourceElementEvent
+			element.on "change", $scope.clearSourceElementEvent
 
-			element.on "keyup", ->
-				if $scope.hasPasted
-					pasteData = element.val()
-					if typeof $scope.ngPasteFromOnPaste is "function"
-						pasteData = $scope.ngPasteFromOnPaste pasteData
-					$scope.$apply ->
-						$scope.pasteData = pasteData
-					$scope.hasPasted = false
-				element.val ""
-
-		controller: ($scope, $filter, ngPasteFromErrors) ->
+		controller: ($scope, $filter, ngPasteFromErrors, $timeout) ->
 			splitToRows = (data) ->
 				lineEndingsRegExp = /\r\n|\n\r|\n|\r/g;
 				lineEnding = "\n"
@@ -49,7 +37,10 @@ angular.module "ngPasteFrom", []
 					obj[format[index]] = column
 				obj
 
-			$scope.processPasteData = (data) ->
+			processPasteData = (data) ->
+				if not (data and data.length)
+					return
+
 				rows = splitToRows data
 				result = []
 
@@ -70,7 +61,16 @@ angular.module "ngPasteFrom", []
 
 				$scope.ngPasteFrom = result
 
-			$scope.$watch "pasteData", ->
-				if $scope.pasteData? and 0 < $scope.pasteData.length
-					$scope.processPasteData($scope.pasteData)
-					$scope.pasteData = null
+			$scope.pasteEvent = (event) ->
+				element = angular.element event.srcElement
+				element.val ""
+				$timeout ->
+					data = element.val()
+					element.val ""
+					if typeof $scope.ngPasteFromOnPaste is "function"
+						data = $scope.ngPasteFromOnPaste data
+					processPasteData data
+
+			$scope.clearSourceElementEvent = (event) ->
+				element = angular.element event.srcElement
+				element.val ""
