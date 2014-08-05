@@ -11,7 +11,7 @@ angular.module "ngPasteFrom", []
 		restrict: "A"
 		scope: 
 			ngPasteFrom: "="
-			ngPasteFromFormat: "="
+			ngPasteFromColumns: "="
 			ngPasteFromRowSeparator: "="
 			ngPasteFromColumnSeparator: "="
 			ngPasteFromOnPaste: "="
@@ -19,8 +19,8 @@ angular.module "ngPasteFrom", []
 			ngPasteFromOnError: "="
 
 		link: ($scope, element, attrs) ->
-			if not $scope.ngPasteFromFormat?
-				console.error "Missing required attribute ngPasteFromFormat."
+			if not $scope.ngPasteFromColumns?
+				console.error "Missing required attribute ngPasteFromColumns."
 
 			element.on "paste", $scope.pasteEvent
 			element.on "keyup", $scope.clearSourceElementEvent
@@ -29,10 +29,16 @@ angular.module "ngPasteFrom", []
 		controller: ($scope, $filter, ngPasteFromErrors, ngPasteFromSeparators, $timeout) ->
 			columnsToObject = (columns) ->
 				obj = {}
-				format = $scope.ngPasteFromFormat
+				format = $scope.ngPasteFromColumns
 				for column, index in columns
 					obj[format[index]] = column
 				obj
+
+			getColumnsLength = ->
+				if typeof $scope.ngPasteFromColumns is "number"
+					$scope.ngPasteFromColumns
+				else
+					$scope.ngPasteFromColumns.length
 
 			processPasteData = (data) ->
 				if not (data and data.length)
@@ -40,6 +46,7 @@ angular.module "ngPasteFrom", []
 
 				rows = data.split $scope.ngPasteFromRowSeparator ? ngPasteFromSeparators.row
 				result = []
+				columnsLength = getColumnsLength()
 
 				for row, index in rows
 					if row is ""
@@ -47,12 +54,15 @@ angular.module "ngPasteFrom", []
 
 					columns = row.split $scope.ngPasteFromColumnSeparator ? ngPasteFromSeparators.column
 
-					if columns.length isnt $scope.ngPasteFromFormat.length
+					if columns.length isnt columnsLength
 						if typeof $scope.ngPasteFromOnError is "function"
 							$scope.ngPasteFromOnError ngPasteFromErrors.invalidColumnLength, index
 						continue
 
-					obj = columnsToObject columns
+					if typeof $scope.ngPasteFromColumns is "number"
+						obj = columns
+					else
+						obj = columnsToObject columns
 
 					if typeof $scope.ngPasteFromOnValidate isnt "function" or $scope.ngPasteFromOnValidate obj, index
 						result.push obj

@@ -22,8 +22,8 @@ NOTE: It is important that the element that has the ng-paste-from directive supp
 | Attribute                      | Type             | Default              | Description |
 | ------------------------------ | ---------------- | -------------------- | ----------- |
 | ng-paste-from                  | variable binding |                      | this attribute defines which variable on the scope that should be assigned the array of objects from the parse |
-| ng-paste-from-format           | array            |                      | defines the order and name how the object properties maps to the columns |
-| ng-paste-from-row-separator    | string, regexp   | `/\r\n|\n\r|\n|\r/g` | string or regexp used to split the pasted data into rows |
+| ng-paste-from-columns          | array, number    |                      | **if number** then it's the column count, and the parser will return an array of arrays. **if array** then each item is a column and its value is the column name, and the parser will return an array of objects with the column names for keys. |
+| ng-paste-from-row-separator    | string, regexp   | <code>/\r\n&#124;\n\r&#124;\n&#124;\r/g</code> | string or regexp used to split the pasted data into rows |
 | ng-paste-from-column-separator | string, regexp   | `/\t+/g`             | string or regexp used to split the rows into columns |
 | ng-paste-from-on-paste         | function         |                      | function to manipulate paste data before it is parsed, signature onPaste(data), return data. |
 | ng-paste-from-on-validate      | function         |                      | function to custom validate an object, signature onValidate(object, index), return true if valid. |
