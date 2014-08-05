@@ -24,7 +24,7 @@ NOTE: It is important that the element that has the ng-paste-from directive supp
 | ng-paste-from                  | variable binding |                      | this attribute defines which variable on the scope that should be assigned the array of objects from the parse |
 | ng-paste-from-format           | array            |                      | defines the order and name how the object properties maps to the columns |
 | ng-paste-from-row-separator    | string, regexp   | `/\r\n|\n\r|\n|\r/g` | string or regexp used to split the pasted data into rows |
-| ng-paste-from-column-separator | string, regexp   | `"\t"`               | string or regexp used to split the rows into columns |
+| ng-paste-from-column-separator | string, regexp   | `/\t+/g`             | string or regexp used to split the rows into columns |
 | ng-paste-from-on-paste         | function         |                      | function to manipulate paste data before it is parsed, signature onPaste(data), return data. |
 | ng-paste-from-on-validate      | function         |                      | function to custom validate an object, signature onValidate(object, index), return true if valid. |
 | ng-paste-from-on-error         | function         |                      | function to handle errors that occur when parsing the excel data. signature onError(error, index) |
