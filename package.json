@@ -6,7 +6,7 @@
     "type": "git",
     "url": "https://github.com/DigiExam/ng-paste-from.git"
   },
-  "author": "Robin Andersson",
+  "author": "Robin Andersson <robin.andersson@digiexam.se>",
   "bugs": {
     "url": "https://github.com/DigiExam/ng-paste-from/issues"
   },
