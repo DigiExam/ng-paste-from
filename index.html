@@ -3,16 +3,18 @@
 <head>
 	<title>ng-paste-from demo</title>
 	<meta charset="utf-8">
+	<!-- demo -->
 	<link href="dist/main.min.css" rel="stylesheet" />
 </head>
 <body>
 
 	<div class="container" ng-controller="MainController">
+
 		<div class="header">
 			<h1>ng-paste-from demo</h1>
 
 			<p>
-				This is a demo implementation of <a href="https://github.com/DigiExam/ng-paste-from/">ng-paste-from</a>
+				This is a demo implementation of <a href="https://github.com/DigiExam/ng-paste-from/">ng-paste-from</a>.
 			</p>
 
 			<p>
@@ -20,46 +22,62 @@
 			</p>
 		</div>
 
-		<div>
+		<div class="example example-implementation">
 			<h2>Demo</h2>
 
-			<div style="margin-bottom: 20px;">
+			<div class="example-source">
 				<label for="excel-paste">Paste from Excel in this box: </label>
 				<textarea
+					class="example-paste-target"
 					id="excel-paste"
-					ng-paste-from="users" 
-					ng-paste-from-format="['name', 'email']" 
+					ng-paste-from="users"
+					ng-paste-from-format="['name', 'email']"
 					ng-paste-from-on-validate="onValidate"
 					ng-paste-from-on-error="onError"></textarea>
 			</div>
 
+			<div class="example-output" ng-show="users.length">
+				<h3>Parsed data</h3>
 
-			<table style="width: 400px; text-align: left;">
-				<tr>
-					<th>Name</th>
-					<th>E-mail Address</th>
-				</tr>
-				<tr ng-repeat="u in users">
-					<td>{{u.name}}</td>
-					<td>{{u.email}}</td>
-				</tr>
-			</table>
+				<table ng-show="users.length">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>E-mail Address</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="u in users">
+							<td>{{u.name}}</td>
+							<td>{{u.email}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 
-			<hr />
-			<h2>Help Description</h2>
+			<div class="example-errors" ng-show="errors.length">
+				<h3>Parse errors</h3>
 
-			<p>The format should be name e-mail address, see:</p>
-
-			<img src="./img/example-copy.png" alt="Example" />
-			
-			<p style="color: red;" ng-repeat="e in errors">{{e}}</p>
+				<ul>
+					<li ng-repeat="e in errors">{{e}}</li>
+				</ul>
+			</div>
 		</div>
+
+		<div class="example example-aside">
+			<h2>Excel source format</h2>
+
+			<p>The Excel file that you paste from in this demo should have the two columns, <var>name</var> and <var>e-mail address</var>, like this:</p>
+
+			<img src="./img/example-copy.png" alt="Screenshot of an Excel document that has two columns, name and e-mail address, that have been selected and copied to the clipboard." />
+		</div>
+
 	</div>
 
 	<!-- Demo dependencies -->
 	<script src="lib/angular.js"></script>
 
-	<!-- ng-annotate-text -->
+	<!-- ng-paste-from -->
 	<script src="lib/ng-paste-from-latest.min.js"></script>
 
 	<!-- demo -->
