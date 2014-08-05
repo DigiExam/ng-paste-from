@@ -23,6 +23,7 @@ NOTE: It is important that the element that has the ng-paste-from directive supp
 | -------------------- | ---------------- | ----------- |
 | ng-paste-from        | variable binding | this attribute defines which variable on the scope that should be assigned the array of objects from the parse |
 | ng-paste-from-format | array            | defines the order and name how the object properties maps to the columns |
+| ng-paste-on-paste    | function         | function to manipulate paste data before it is parsed, signature onPaste(data), return data. |
 | ng-paste-on-validate | function         | function to custom validate an object, signature onValidate(object, index), return true if valid. |
 | ng-paste-on-error    | function         | function to handle errors that occur when parsing the excel data. signature onError(error, index) |
 

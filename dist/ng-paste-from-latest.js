@@ -1,9 +1,5 @@
 (function() {
-  var ngPasteFrom;
-
-  ngPasteFrom = angular.module("ngPasteFrom", []);
-
-  ngPasteFrom.constant("ngPasteFromErrors", {
+  angular.module("ngPasteFrom", []).constant("ngPasteFromErrors", {
     invalidColumnLength: "NGPASTEFROM_INVALID_COLUMN_LENGTH",
     failedValidation: "NGPASTEFROM_FAILED_VALIDATION"
   }).directive("ngPasteFrom", function() {
@@ -12,6 +8,7 @@
       scope: {
         ngPasteFrom: "=",
         ngPasteFromFormat: "=",
+        ngPasteFromOnPaste: "=",
         ngPasteFromOnValidate: "=",
         ngPasteFromOnError: "="
       },
@@ -26,7 +23,7 @@
         return element.on("keyup", function(event) {
           if ($scope.hasPasted) {
             $scope.$apply(function() {
-              return $scope.pasteData = element.val();
+              return $scope.pasteData = $scope.ngPasteFromOnPaste(element.val());
             });
             $scope.hasPasted = false;
           }
@@ -34,13 +31,19 @@
         });
       },
       controller: function($scope, $filter, ngPasteFromErrors) {
-        var columnsToObject, defaultOnError, defaultOnValidate, splitToColumns, splitToRows;
+        var columnsToObject, defaultOnError, defaultOnPaste, defaultOnValidate, splitToColumns, splitToRows;
+        defaultOnPaste = function(data) {
+          return data;
+        };
         defaultOnError = function(error, index) {
           return console.error("ngPasteFromError: index " + index + " error: " + error);
         };
         defaultOnValidate = function(object, index) {
           return true;
         };
+        if ($scope.ngPasteFromOnPaste == null) {
+          $scope.ngPasteFromOnPaste = defaultOnPaste;
+        }
         if ($scope.ngPasteFromOnError == null) {
           $scope.ngPasteFromOnError = defaultOnError;
         }

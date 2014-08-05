@@ -7,6 +7,7 @@ angular.module "ngPasteFrom", []
 		scope: 
 			ngPasteFrom: "="
 			ngPasteFromFormat: "="
+			ngPasteFromOnPaste: "="
 			ngPasteFromOnValidate: "="
 			ngPasteFromOnError: "="
 		
@@ -23,20 +24,23 @@ angular.module "ngPasteFrom", []
 			element.on "keyup", (event) ->
 				if $scope.hasPasted
 					$scope.$apply ->
-						$scope.pasteData = element.val()
+						$scope.pasteData = $scope.ngPasteFromOnPaste element.val()
 					
 					$scope.hasPasted = false
 
 				element.val("")
 			
 		controller: ($scope, $filter, ngPasteFromErrors) ->
+			defaultOnPaste = (data) -> data
+
 			defaultOnError = (error, index) ->
 				console.error "ngPasteFromError: index " + index + " error: " + error
 
 			defaultOnValidate = (object, index) ->
 				return true
 
-			# Assign default error and validation handler in case they are not set.
+			# Assign default callbacks
+			if not $scope.ngPasteFromOnPaste? then $scope.ngPasteFromOnPaste = defaultOnPaste
 			if not $scope.ngPasteFromOnError? then $scope.ngPasteFromOnError = defaultOnError
 			if not $scope.ngPasteFromOnValidate? then $scope.ngPasteFromOnValidate = defaultOnValidate
 
