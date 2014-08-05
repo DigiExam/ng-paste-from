@@ -11,7 +11,7 @@ AngularJS directive that handles conversion of paste from Excel to scope.
 	<textarea
 		id="excel-paste"
 		ng-paste-from="users" 
-		ng-paste-from-format="['name', 'email']" 
+		ng-paste-from-columns="['name', 'email']" 
 		ng-paste-from-on-validate="onValidate"
 		ng-paste-from-on-error="onError"></textarea>
 
@@ -19,15 +19,68 @@ NOTE: It is important that the element that has the ng-paste-from directive supp
 
 ## Attributes
 
-| Attribute                      | Type             | Default              | Description |
-| ------------------------------ | ---------------- | -------------------- | ----------- |
-| ng-paste-from                  | variable binding |                      | this attribute defines which variable on the scope that should be assigned the array of objects from the parse |
-| ng-paste-from-columns          | array, number    |                      | **if number** then it's the column count, and the parser will return an array of arrays. **if array** then each item is a column and its value is the column name, and the parser will return an array of objects with the column names for keys. |
-| ng-paste-from-row-separator    | string, regexp   | <code>/\r\n&#124;\n\r&#124;\n&#124;\r/g</code> | string or regexp used to split the pasted data into rows |
-| ng-paste-from-column-separator | string, regexp   | `/\t+/g`             | string or regexp used to split the rows into columns |
-| ng-paste-from-on-paste         | function         |                      | function to manipulate paste data before it is parsed, signature onPaste(data), return data. |
-| ng-paste-from-on-validate      | function         |                      | function to custom validate an object, signature onValidate(object, index), return true if valid. |
-| ng-paste-from-on-error         | function         |                      | function to handle errors that occur when parsing the excel data. signature onError(error, index) |
+### `ng-paste-from`
+
+* Type: variable binding
+
+The variable on the scope that should be assigned the parsed result.
+
+The format of the parsed result depends on `ng-paste-from-columns`,
+look at that attribute for more information.
+
+### `ng-paste-from-columns`
+
+#### Type: `Array`
+
+* Example: `ng-paste-from-columns="['name', 'email']"`
+* **Parsed result:** an array of row objects.
+* **Parsed result example:** `[{"name": "a", "email": "a@a.a"},{"name": "b", "email": "b@b.b"}]`
+
+The arrays length becomes the number of columns expected by the parser.
+
+#### Type: `Number`
+
+* Example: `ng-paste-from-columns="2"`
+* **Parsed result:** an array of row arrays (each array item is a column)
+* **Parsed result example:** `[["a", "a@a.a],["b", "b@b.b"]]`
+
+It's the number of columns expected by the parser.
+
+### `ng-paste-from-row-separator`
+
+* Type: `RegExp`, `String`
+* Default value: <code>/\r\n&#124;\n\r&#124;\n&#124;\r/g</code>
+ 
+Used to split the pasted data into rows.
+
+### `ng-paste-from-column-separator`
+
+* Type: `RegExp`, `String`
+* Default value: `/\t+/g`
+             
+Used to split the rows into columns.
+
+### `ng-paste-from-on-paste`
+
+* Type: `Function`
+* Signature: `onPaste(data)`
+* **Return:** the data, or else nothing will be parsed.
+
+Callback to manipulate paste data before it is parsed.
+
+### `ng-paste-from-on-validate`
+
+* Type: `Function`
+* Signature: `onValidate(object, index)`
+
+Callback to validate an object.
+
+### `ng-paste-from-on-error`
+
+* Type: `Function`
+* Signature: `onError(error, index)`
+
+Callback to handle errors.
 
 ## Errors passed to the on error callback
 
