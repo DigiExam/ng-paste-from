@@ -21,13 +21,26 @@
         if ($scope.ngPasteFromColumns == null) {
           console.error("Missing required attribute ngPasteFromColumns.");
         }
+        $scope.pasteEvent = function(event) {
+          var clipboardData, data, _ref;
+          clipboardData = (_ref = window.clipboardData) != null ? _ref : event.clipboardData;
+          data = clipboardData.getData("text/plain");
+          event.preventDefault();
+          if (typeof $scope.ngPasteFromOnPaste === "function") {
+            data = $scope.ngPasteFromOnPaste(data);
+          }
+          $scope.processPasteData(data);
+          return false;
+        };
+        $scope.clearSourceElementEvent = function() {
+          return element.val("");
+        };
         element.on("paste", $scope.pasteEvent);
         element.on("keyup", $scope.clearSourceElementEvent);
         return element.on("change", $scope.clearSourceElementEvent);
       },
-      controller: function($scope, $filter, ngPasteFromErrors, ngPasteFromSeparators, $timeout) {
-        var columnsToObject, getColumnsLength, processPasteData;
-        columnsToObject = function(columns) {
+      controller: function($scope, $filter, ngPasteFromErrors, ngPasteFromSeparators) {
+        $scope.columnsToObject = function(columns) {
           var column, format, index, obj, _i, _len;
           obj = {};
           format = $scope.ngPasteFromColumns;
@@ -37,21 +50,21 @@
           }
           return obj;
         };
-        getColumnsLength = function() {
+        $scope.getColumnsLength = function() {
           if (typeof $scope.ngPasteFromColumns === "number") {
             return $scope.ngPasteFromColumns;
           } else {
             return $scope.ngPasteFromColumns.length;
           }
         };
-        processPasteData = function(data) {
+        return $scope.processPasteData = function(data) {
           var columns, columnsLength, index, obj, result, row, rows, _i, _len, _ref, _ref1;
           if (!(data && data.length)) {
             return;
           }
           rows = data.split((_ref = $scope.ngPasteFromRowSeparator) != null ? _ref : ngPasteFromSeparators.row);
           result = [];
-          columnsLength = getColumnsLength();
+          columnsLength = $scope.getColumnsLength();
           for (index = _i = 0, _len = rows.length; _i < _len; index = ++_i) {
             row = rows[index];
             if (row === "") {
@@ -67,7 +80,7 @@
             if (typeof $scope.ngPasteFromColumns === "number") {
               obj = columns;
             } else {
-              obj = columnsToObject(columns);
+              obj = $scope.columnsToObject(columns);
             }
             if (typeof $scope.ngPasteFromOnValidate !== "function" || $scope.ngPasteFromOnValidate(obj, index)) {
               result.push(obj);
@@ -75,26 +88,9 @@
               $scope.ngPasteFromOnError(ngPasteFromErrors.failedValidation, index);
             }
           }
-          return $scope.ngPasteFrom = result;
-        };
-        $scope.pasteEvent = function(event) {
-          var element;
-          element = angular.element(event.srcElement);
-          element.val("");
-          return $timeout(function() {
-            var data;
-            data = element.val();
-            element.val("");
-            if (typeof $scope.ngPasteFromOnPaste === "function") {
-              data = $scope.ngPasteFromOnPaste(data);
-            }
-            return processPasteData(data);
+          return $scope.$apply(function() {
+            return $scope.ngPasteFrom = result;
           });
-        };
-        return $scope.clearSourceElementEvent = function(event) {
-          var element;
-          element = angular.element(event.srcElement);
-          return element.val("");
         };
       }
     };
