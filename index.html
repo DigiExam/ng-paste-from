@@ -37,6 +37,14 @@
 					ng-paste-from-on-error="onError"></textarea>
 			</div>
 
+			<div class="example-errors" ng-show="errors.length">
+				<h3>Parse errors</h3>
+
+				<ul>
+					<li ng-repeat="e in errors">{{e}}</li>
+				</ul>
+			</div>
+
 			<div class="example-output" ng-show="users.length">
 				<h3>Parsed data</h3>
 
@@ -54,14 +62,6 @@
 						</tr>
 					</tbody>
 				</table>
-			</div>
-
-			<div class="example-errors" ng-show="errors.length">
-				<h3>Parse errors</h3>
-
-				<ul>
-					<li ng-repeat="e in errors">{{e}}</li>
-				</ul>
 			</div>
 		</div>
 

@@ -72,6 +72,12 @@ textarea {
 	}
 }
 
+.example-source,
+.example-errors,
+.example-output {
+	margin-bottom: $space;
+}
+
 .example-aside {
 	margin-top: $space * 2;
 
@@ -91,14 +97,6 @@ textarea {
 
 	li {
 		margin-bottom: $space / 2;
-	}
-}
-
-.example-source {
-	margin-bottom: $space;
-	
-	label {
-		display: block;
 	}
 }
 
