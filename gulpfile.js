@@ -5,6 +5,7 @@ var r = require("gulp-load-plugins")();
 
 var src = {
 	js: "src/*.coffee",
+	css: "src/*.scss",
 	lib: [
 		"bower_components/angular/angular.js",		
 		"bower_components/ng-paste-from/dist/*latest.min*"
@@ -18,7 +19,7 @@ var dest = {
 };
 
 gulp.task("default", function() {
-	return gulp.start("js", "lib");
+	return gulp.start("js", "css", "lib");
 });
 
 gulp.task("watch", function() {
@@ -56,6 +57,17 @@ gulp.task("js", function() {
 			.pipe(r.uglify({mangle: false}))
 			.pipe(r.rename({suffix: ".min"}))
 			.pipe(r.sourcemaps.write("./"))
+			.pipe(gulp.dest(dest.dist));
+});
+
+gulp.task("css", function() {
+	return gulp.src(src.css)
+			.pipe(r.rubySass())
+//			.pipe(r.sourcemaps.init({loadMaps: true}))
+			.pipe(r.autoprefixer("last 2 versions", "ie >= 9", "Firefox ESR"))
+			.pipe(r.minifyCss())
+			.pipe(r.rename({suffix: ".min"}))
+//			.pipe(r.sourcemaps.write("./"))
 			.pipe(gulp.dest(dest.dist));
 });
 
