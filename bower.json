@@ -6,7 +6,7 @@
     "(Robin Andersson <robin.andersson@digiexam.se>)",
     "(Kenneth Sundqvist <kenneth.sundqvist@digiexam.se>)"
   ],
-	"description": "AngularJS directive that handles conversion of paste from Excel to scope",
+	"description": "AngularJS directive that converts pasted plain text tabular data to an array of arrays/objects on the scope.",
   "keywords": [
     "angularjs",
     "excel",

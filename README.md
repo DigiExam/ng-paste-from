@@ -1,6 +1,6 @@
 # ng-paste-from
 
-AngularJS directive that handles conversion of paste from Excel to scope.
+AngularJS directive that converts pasted plain text tabular data to an array of arrays/objects on the scope.
 
 ## Demo
 

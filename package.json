@@ -1,7 +1,7 @@
 {
   "name": "ng-paste-from",
   "version": "0.1.0",
-  "description": "AngularJS directive that handles conversion of paste from Excel to scope",
+  "description": "AngularJS directive that converts pasted plain text tabular data to an array of arrays/objects on the scope.",
   "repository": {
     "type": "git",
     "url": "https://github.com/DigiExam/ng-paste-from.git"
