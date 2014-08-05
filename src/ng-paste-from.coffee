@@ -42,6 +42,9 @@ angular.module "ngPasteFrom", []
 				result = []
 
 				for row, index in rows
+					if row is ""
+						continue
+
 					columns = row.split $scope.ngPasteFromColumnSeparator ? ngPasteFromSeparators.column
 
 					if columns.length isnt $scope.ngPasteFromFormat.length

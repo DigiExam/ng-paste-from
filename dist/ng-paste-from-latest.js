@@ -46,6 +46,9 @@
           result = [];
           for (index = _i = 0, _len = rows.length; _i < _len; index = ++_i) {
             row = rows[index];
+            if (row === "") {
+              continue;
+            }
             columns = row.split((_ref1 = $scope.ngPasteFromColumnSeparator) != null ? _ref1 : ngPasteFromSeparators.column);
             if (columns.length !== $scope.ngPasteFromFormat.length) {
               if (typeof $scope.ngPasteFromOnError === "function") {
