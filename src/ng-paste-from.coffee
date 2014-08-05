@@ -3,11 +3,17 @@ angular.module "ngPasteFrom", []
 		invalidColumnLength: "NGPASTEFROM_INVALID_COLUMN_LENGTH"
 		failedValidation: "NGPASTEFROM_FAILED_VALIDATION"
 
+	.constant "ngPasteFromSeparators",
+		row: /\r\n|\n\r|\n|\r/g
+		column: "\t"
+
 	.directive "ngPasteFrom", ->
 		restrict: "A"
 		scope: 
 			ngPasteFrom: "="
 			ngPasteFromFormat: "="
+			ngPasteFromRowSeparator: "="
+			ngPasteFromColumnSeparator: "="
 			ngPasteFromOnPaste: "="
 			ngPasteFromOnValidate: "="
 			ngPasteFromOnError: "="
@@ -20,16 +26,7 @@ angular.module "ngPasteFrom", []
 			element.on "keyup", $scope.clearSourceElementEvent
 			element.on "change", $scope.clearSourceElementEvent
 
-		controller: ($scope, $filter, ngPasteFromErrors, $timeout) ->
-			splitToRows = (data) ->
-				lineEndingsRegExp = /\r\n|\n\r|\n|\r/g;
-				lineEnding = "\n"
-				data.replace(lineEndingsRegExp, lineEnding).split(lineEnding)
-
-			splitToColumns = (row) ->
-				separatorChar = "\t"
-				row.split separatorChar
-
+		controller: ($scope, $filter, ngPasteFromErrors, ngPasteFromSeparators, $timeout) ->
 			columnsToObject = (columns) ->
 				obj = {}
 				format = $scope.ngPasteFromFormat
@@ -41,11 +38,11 @@ angular.module "ngPasteFrom", []
 				if not (data and data.length)
 					return
 
-				rows = splitToRows data
+				rows = data.split $scope.ngPasteFromRowSeparator ? ngPasteFromSeparators.row
 				result = []
 
 				for row, index in rows
-					columns = splitToColumns row
+					columns = row.split $scope.ngPasteFromColumnSeparator ? ngPasteFromSeparators.column
 
 					if columns.length isnt $scope.ngPasteFromFormat.length
 						if typeof $scope.ngPasteFromOnError is "function"

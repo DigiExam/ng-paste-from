@@ -2,12 +2,17 @@
   angular.module("ngPasteFrom", []).constant("ngPasteFromErrors", {
     invalidColumnLength: "NGPASTEFROM_INVALID_COLUMN_LENGTH",
     failedValidation: "NGPASTEFROM_FAILED_VALIDATION"
+  }).constant("ngPasteFromSeparators", {
+    row: /\r\n|\n\r|\n|\r/g,
+    column: "\t"
   }).directive("ngPasteFrom", function() {
     return {
       restrict: "A",
       scope: {
         ngPasteFrom: "=",
         ngPasteFromFormat: "=",
+        ngPasteFromRowSeparator: "=",
+        ngPasteFromColumnSeparator: "=",
         ngPasteFromOnPaste: "=",
         ngPasteFromOnValidate: "=",
         ngPasteFromOnError: "="
@@ -20,19 +25,8 @@
         element.on("keyup", $scope.clearSourceElementEvent);
         return element.on("change", $scope.clearSourceElementEvent);
       },
-      controller: function($scope, $filter, ngPasteFromErrors, $timeout) {
-        var columnsToObject, processPasteData, splitToColumns, splitToRows;
-        splitToRows = function(data) {
-          var lineEnding, lineEndingsRegExp;
-          lineEndingsRegExp = /\r\n|\n\r|\n|\r/g;
-          lineEnding = "\n";
-          return data.replace(lineEndingsRegExp, lineEnding).split(lineEnding);
-        };
-        splitToColumns = function(row) {
-          var separatorChar;
-          separatorChar = "\t";
-          return row.split(separatorChar);
-        };
+      controller: function($scope, $filter, ngPasteFromErrors, ngPasteFromSeparators, $timeout) {
+        var columnsToObject, processPasteData;
         columnsToObject = function(columns) {
           var column, format, index, obj, _i, _len;
           obj = {};
@@ -44,15 +38,15 @@
           return obj;
         };
         processPasteData = function(data) {
-          var columns, index, obj, result, row, rows, _i, _len;
+          var columns, index, obj, result, row, rows, _i, _len, _ref, _ref1;
           if (!(data && data.length)) {
             return;
           }
-          rows = splitToRows(data);
+          rows = data.split((_ref = $scope.ngPasteFromRowSeparator) != null ? _ref : ngPasteFromSeparators.row);
           result = [];
           for (index = _i = 0, _len = rows.length; _i < _len; index = ++_i) {
             row = rows[index];
-            columns = splitToColumns(row);
+            columns = row.split((_ref1 = $scope.ngPasteFromColumnSeparator) != null ? _ref1 : ngPasteFromSeparators.column);
             if (columns.length !== $scope.ngPasteFromFormat.length) {
               if (typeof $scope.ngPasteFromOnError === "function") {
                 $scope.ngPasteFromOnError(ngPasteFromErrors.invalidColumnLength, index);
