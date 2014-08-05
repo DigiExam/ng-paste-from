@@ -24,6 +24,7 @@ gulp.task("default", function() {
 
 gulp.task("watch", function() {
 	gulp.watch(src.js, ["js"]);
+	gulp.watch(src.css, ["css"]);
 	gulp.watch(src.lib, ["lib"]);
 	return gulp.start("default");
 });
