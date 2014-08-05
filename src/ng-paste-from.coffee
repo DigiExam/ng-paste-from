@@ -11,7 +11,7 @@ angular.module "ngPasteFrom", []
 			ngPasteFromOnPaste: "="
 			ngPasteFromOnValidate: "="
 			ngPasteFromOnError: "="
-		
+
 		link: ($scope, element, attrs) ->
 			if not $scope.ngPasteFromFormat?
 				console.error "Missing required attribute ngPasteFromFormat."
@@ -21,27 +21,18 @@ angular.module "ngPasteFrom", []
 			element.on "paste", ->
 				element.val ""
 				$scope.hasPasted = true
-			
+
 			element.on "keyup", ->
 				if $scope.hasPasted
+					pasteData = element.val()
+					if typeof $scope.ngPasteFromOnPaste is "function"
+						pasteData = $scope.ngPasteFromOnPaste pasteData
 					$scope.$apply ->
-						$scope.pasteData = $scope.ngPasteFromOnPaste element.val()
+						$scope.pasteData = pasteData
 					$scope.hasPasted = false
 				element.val ""
 
 		controller: ($scope, $filter, ngPasteFromErrors) ->
-			defaultOnPaste = (data) -> data
-
-			defaultOnError = (error, index) ->
-				console.error "ngPasteFromError: index " + index + " error: " + error
-
-			defaultOnValidate = -> true
-
-			# Assign default callbacks
-			if not $scope.ngPasteFromOnPaste? then $scope.ngPasteFromOnPaste = defaultOnPaste
-			if not $scope.ngPasteFromOnError? then $scope.ngPasteFromOnError = defaultOnError
-			if not $scope.ngPasteFromOnValidate? then $scope.ngPasteFromOnValidate = defaultOnValidate
-
 			splitToRows = (data) ->
 				lineEndingsRegExp = /\r\n|\n\r|\n|\r/g;
 				lineEnding = "\n"
@@ -66,14 +57,15 @@ angular.module "ngPasteFrom", []
 					columns = splitToColumns row
 
 					if columns.length isnt $scope.ngPasteFromFormat.length
-						$scope.ngPasteFromOnError ngPasteFromErrors.invalidColumnLength, index
+						if typeof $scope.ngPasteFromOnError is "function"
+							$scope.ngPasteFromOnError ngPasteFromErrors.invalidColumnLength, index
 						continue
 
 					obj = columnsToObject columns
 
-					if $scope.ngPasteFromOnValidate obj, index
+					if typeof $scope.ngPasteFromOnValidate isnt "function" or $scope.ngPasteFromOnValidate obj, index
 						result.push obj
-					else
+					else if typeof $scope.ngPasteFromOnError is "function"
 						$scope.ngPasteFromOnError ngPasteFromErrors.failedValidation, index
 
 				$scope.ngPasteFrom = result

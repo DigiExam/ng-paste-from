@@ -21,9 +21,14 @@
           return $scope.hasPasted = true;
         });
         return element.on("keyup", function() {
+          var pasteData;
           if ($scope.hasPasted) {
+            pasteData = element.val();
+            if (typeof $scope.ngPasteFromOnPaste === "function") {
+              pasteData = $scope.ngPasteFromOnPaste(pasteData);
+            }
             $scope.$apply(function() {
-              return $scope.pasteData = $scope.ngPasteFromOnPaste(element.val());
+              return $scope.pasteData = pasteData;
             });
             $scope.hasPasted = false;
           }
@@ -31,25 +36,7 @@
         });
       },
       controller: function($scope, $filter, ngPasteFromErrors) {
-        var columnsToObject, defaultOnError, defaultOnPaste, defaultOnValidate, splitToColumns, splitToRows;
-        defaultOnPaste = function(data) {
-          return data;
-        };
-        defaultOnError = function(error, index) {
-          return console.error("ngPasteFromError: index " + index + " error: " + error);
-        };
-        defaultOnValidate = function() {
-          return true;
-        };
-        if ($scope.ngPasteFromOnPaste == null) {
-          $scope.ngPasteFromOnPaste = defaultOnPaste;
-        }
-        if ($scope.ngPasteFromOnError == null) {
-          $scope.ngPasteFromOnError = defaultOnError;
-        }
-        if ($scope.ngPasteFromOnValidate == null) {
-          $scope.ngPasteFromOnValidate = defaultOnValidate;
-        }
+        var columnsToObject, splitToColumns, splitToRows;
         splitToRows = function(data) {
           var lineEnding, lineEndingsRegExp;
           lineEndingsRegExp = /\r\n|\n\r|\n|\r/g;
@@ -79,13 +66,15 @@
             row = rows[index];
             columns = splitToColumns(row);
             if (columns.length !== $scope.ngPasteFromFormat.length) {
-              $scope.ngPasteFromOnError(ngPasteFromErrors.invalidColumnLength, index);
+              if (typeof $scope.ngPasteFromOnError === "function") {
+                $scope.ngPasteFromOnError(ngPasteFromErrors.invalidColumnLength, index);
+              }
               continue;
             }
             obj = columnsToObject(columns);
-            if ($scope.ngPasteFromOnValidate(obj, index)) {
+            if (typeof $scope.ngPasteFromOnValidate !== "function" || $scope.ngPasteFromOnValidate(obj, index)) {
               result.push(obj);
-            } else {
+            } else if (typeof $scope.ngPasteFromOnError === "function") {
               $scope.ngPasteFromOnError(ngPasteFromErrors.failedValidation, index);
             }
           }
