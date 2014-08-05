@@ -16,11 +16,11 @@
         if ($scope.ngPasteFromFormat == null) {
           console.error("Missing required attribute ngPasteFromFormat.");
         }
-        element.on("paste", function(event) {
+        element.on("paste", function() {
           element.val("");
           return $scope.hasPasted = true;
         });
-        return element.on("keyup", function(event) {
+        return element.on("keyup", function() {
           if ($scope.hasPasted) {
             $scope.$apply(function() {
               return $scope.pasteData = $scope.ngPasteFromOnPaste(element.val());
@@ -38,7 +38,7 @@
         defaultOnError = function(error, index) {
           return console.error("ngPasteFromError: index " + index + " error: " + error);
         };
-        defaultOnValidate = function(object, index) {
+        defaultOnValidate = function() {
           return true;
         };
         if ($scope.ngPasteFromOnPaste == null) {
@@ -62,31 +62,31 @@
           return row.split(separatorChar);
         };
         columnsToObject = function(columns) {
-          var c, format, i, o, _i, _len;
-          o = {};
+          var column, format, index, obj, _i, _len;
+          obj = {};
           format = $scope.ngPasteFromFormat;
-          for (i = _i = 0, _len = columns.length; _i < _len; i = ++_i) {
-            c = columns[i];
-            o[format[i]] = c;
+          for (index = _i = 0, _len = columns.length; _i < _len; index = ++_i) {
+            column = columns[index];
+            obj[format[index]] = column;
           }
-          return o;
+          return obj;
         };
         $scope.processPasteData = function(data) {
-          var columns, i, o, r, result, rows, _i, _len;
+          var columns, index, obj, result, row, rows, _i, _len;
           rows = splitToRows(data);
           result = [];
-          for (i = _i = 0, _len = rows.length; _i < _len; i = ++_i) {
-            r = rows[i];
-            columns = splitToColumns(r);
+          for (index = _i = 0, _len = rows.length; _i < _len; index = ++_i) {
+            row = rows[index];
+            columns = splitToColumns(row);
             if (columns.length !== $scope.ngPasteFromFormat.length) {
-              $scope.ngPasteFromOnError(ngPasteFromErrors.invalidColumnLength, i);
+              $scope.ngPasteFromOnError(ngPasteFromErrors.invalidColumnLength, index);
               continue;
             }
-            o = columnsToObject(columns);
-            if ($scope.ngPasteFromOnValidate(o, i)) {
-              result.push(o);
+            obj = columnsToObject(columns);
+            if ($scope.ngPasteFromOnValidate(obj, index)) {
+              result.push(obj);
             } else {
-              $scope.ngPasteFromOnError(ngPasteFromErrors.failedValidation, i);
+              $scope.ngPasteFromOnError(ngPasteFromErrors.failedValidation, index);
             }
           }
           return $scope.ngPasteFrom = result;

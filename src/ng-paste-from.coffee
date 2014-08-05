@@ -2,6 +2,7 @@ angular.module "ngPasteFrom", []
 	.constant "ngPasteFromErrors",
 		invalidColumnLength: "NGPASTEFROM_INVALID_COLUMN_LENGTH"
 		failedValidation: "NGPASTEFROM_FAILED_VALIDATION"
+
 	.directive "ngPasteFrom", ->
 		restrict: "A"
 		scope: 
@@ -17,27 +18,24 @@ angular.module "ngPasteFrom", []
 
 			# NOTE: This solution with paste + keyup kind of works, but it is not optimal.
 			# It causes the data to show and not get processed until key up.
-			element.on "paste", (event) ->
-				element.val("")
+			element.on "paste", ->
+				element.val ""
 				$scope.hasPasted = true
 			
-			element.on "keyup", (event) ->
+			element.on "keyup", ->
 				if $scope.hasPasted
 					$scope.$apply ->
 						$scope.pasteData = $scope.ngPasteFromOnPaste element.val()
-					
 					$scope.hasPasted = false
+				element.val ""
 
-				element.val("")
-			
 		controller: ($scope, $filter, ngPasteFromErrors) ->
 			defaultOnPaste = (data) -> data
 
 			defaultOnError = (error, index) ->
 				console.error "ngPasteFromError: index " + index + " error: " + error
 
-			defaultOnValidate = (object, index) ->
-				return true
+			defaultOnValidate = -> true
 
 			# Assign default callbacks
 			if not $scope.ngPasteFromOnPaste? then $scope.ngPasteFromOnPaste = defaultOnPaste
@@ -47,40 +45,36 @@ angular.module "ngPasteFrom", []
 			splitToRows = (data) ->
 				lineEndingsRegExp = /\r\n|\n\r|\n|\r/g;
 				lineEnding = "\n"
-
-				return data.replace(lineEndingsRegExp, lineEnding).split(lineEnding)
+				data.replace(lineEndingsRegExp, lineEnding).split(lineEnding)
 
 			splitToColumns = (row) ->
 				separatorChar = "\t"
-
-				return row.split(separatorChar)
+				row.split separatorChar
 
 			columnsToObject = (columns) ->
-				o = {}
+				obj = {}
 				format = $scope.ngPasteFromFormat
-
-				for c, i in columns
-					o[format[i]] = c
-
-				return o
+				for column, index in columns
+					obj[format[index]] = column
+				obj
 
 			$scope.processPasteData = (data) ->
 				rows = splitToRows data
 				result = []
 
-				for r, i in rows
-					columns = splitToColumns r
+				for row, index in rows
+					columns = splitToColumns row
 
 					if columns.length isnt $scope.ngPasteFromFormat.length
-						$scope.ngPasteFromOnError ngPasteFromErrors.invalidColumnLength, i
+						$scope.ngPasteFromOnError ngPasteFromErrors.invalidColumnLength, index
 						continue
 
-					o = columnsToObject columns
+					obj = columnsToObject columns
 
-					if $scope.ngPasteFromOnValidate o, i
-						result.push o
+					if $scope.ngPasteFromOnValidate obj, index
+						result.push obj
 					else
-						$scope.ngPasteFromOnError ngPasteFromErrors.failedValidation, i
+						$scope.ngPasteFromOnError ngPasteFromErrors.failedValidation, index
 
 				$scope.ngPasteFrom = result
 
