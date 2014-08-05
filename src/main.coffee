@@ -3,6 +3,10 @@ angular.module("app", ["ngPasteFrom"])
 		$scope.errors = []
 		$scope.users = []
 
+		$scope.onPaste = (data) ->
+			$scope.errors = []
+			data
+
 		$scope.onError = (error, index) ->
 			if error is ngPasteFromErrors.invalidColumnLength
 				$scope.errors.push "Invalid column length on row " + (index + 1)

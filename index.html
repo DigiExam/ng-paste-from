@@ -32,6 +32,7 @@
 					id="excel-paste"
 					ng-paste-from="users"
 					ng-paste-from-format="['name', 'email']"
+					ng-paste-from-on-paste="onPaste"
 					ng-paste-from-on-validate="onValidate"
 					ng-paste-from-on-error="onError"></textarea>
 			</div>
@@ -83,6 +84,7 @@ Kenneth Sundqvist	kenneth.sundqvist@digiexam.se</textarea></p>
 
 	<!-- ng-paste-from -->
 	<script src="lib/ng-paste-from-latest.min.js"></script>
+	<!--<script src="lib/ng-paste-from-unstable.min.js"></script>-->
 
 	<!-- demo -->
 	<script src="dist/main.min.js"></script>
