@@ -26,7 +26,7 @@
 			<h2>Demo</h2>
 
 			<div class="example-source">
-				<label for="excel-paste">Paste from Excel in this box: </label>
+				<label for="excel-paste">Paste in this box: </label>
 				<textarea
 					class="example-paste-target"
 					id="excel-paste"
@@ -65,11 +65,15 @@
 		</div>
 
 		<div class="example example-aside">
-			<h2>Excel source format</h2>
-
+			<h2>Excel format</h2>
 			<p>The Excel file that you paste from in this demo should have the two columns, <var>name</var> and <var>e-mail address</var>, like this:</p>
+			<p><img src="./img/example-copy.png" alt="Screenshot of an Excel document that has two columns, name and e-mail address, that have been selected and copied to the clipboard." /></p>
 
-			<img src="./img/example-copy.png" alt="Screenshot of an Excel document that has two columns, name and e-mail address, that have been selected and copied to the clipboard." />
+			<h2>Plain text format</h2>
+			<p>The format uses new lines as rows separators and tab characters as column separators.</p>
+			<p>This is what would be pasted if you copied the data from the Excel document in the screenshot:</p>
+			<p><textarea class="example-paste-target">Robin Andersson	robin.andersson@digiexam.se
+Kenneth Sundqvist	kenneth.sundqvist@digiexam.se</textarea></p>
 		</div>
 
 	</div>
