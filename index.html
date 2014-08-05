@@ -14,11 +14,16 @@
 			<h1>ng-paste-from demo</h1>
 
 			<p>
-				This is a demo implementation of <a href="https://github.com/DigiExam/ng-paste-from/">ng-paste-from</a>.
+				This is a demo implementation of <a href="https://github.com/DigiExam/ng-paste-from/">ng-paste-from</a>,
+				an AngularJS directive to parse tabular plain text data into a model on your scope.
 			</p>
 
+			<p>The directive can use any string or regular expression as row and column separators.</p>
+
 			<p>
-				<a href="https://github.com/DigiExam/ng-paste-from/tree/gh-pages">Here is the source code</a> for this demo.
+				Documentation and source code for
+				<a href="https://github.com/DigiExam/ng-paste-from/tree/gh-pages">this demo</a>
+				and <a href="https://github.com/DigiExam/ng-paste-from/">ng-paste-from</a>.
 			</p>
 		</div>
 
@@ -26,15 +31,25 @@
 			<h2>Demo</h2>
 
 			<div class="example-source">
-				<label for="excel-paste">Paste in this box: </label>
-				<textarea
-					class="example-paste-target"
-					id="excel-paste"
-					ng-paste-from="users"
-					ng-paste-from-format="['name', 'email']"
-					ng-paste-from-on-paste="onPaste"
-					ng-paste-from-on-validate="onValidate"
-					ng-paste-from-on-error="onError"></textarea>
+				<p>This demo expects two columns: "name" and "email".</p>
+
+				<p>
+					<label for="example-copy-target">Copy this text:</label>
+					<textarea id="example-copy-target" class="example-paste-target">Robin Andersson	robin.andersson@digiexam.se
+Kenneth Sundqvist	kenneth.sundqvist@digiexam.se</textarea>
+				</p>
+
+				<p>
+					<label for="example-paste-target">Paste in this box:</label>
+					<textarea
+						class="example-paste-target"
+						id="example-paste-target"
+						ng-paste-from="users"
+						ng-paste-from-format="['name', 'email']"
+						ng-paste-from-on-paste="onPaste"
+						ng-paste-from-on-validate="onValidate"
+						ng-paste-from-on-error="onError"></textarea>
+				</p>
 			</div>
 
 			<div class="example-errors" ng-show="errors.length">
@@ -52,7 +67,7 @@
 					<thead>
 						<tr>
 							<th>Name</th>
-							<th>E-mail Address</th>
+							<th>E-mail address</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -66,15 +81,9 @@
 		</div>
 
 		<div class="example example-aside">
-			<h2>Excel format</h2>
-			<p>The Excel file that you paste from in this demo should have the two columns, <var>name</var> and <var>e-mail address</var>, like this:</p>
+			<h2>Paste from Excel</h2>
+			<p>You can paste directly from Excel into the directive. It will use tab characters as column separators.</p>
 			<p><img src="./img/example-copy.png" alt="Screenshot of an Excel document that has two columns, name and e-mail address, that have been selected and copied to the clipboard." /></p>
-
-			<h2>Plain text format</h2>
-			<p>The format uses new lines as rows separators and tab characters as column separators.</p>
-			<p>This is what would be pasted if you copied the data from the Excel document in the screenshot:</p>
-			<p><textarea class="example-paste-target">Robin Andersson	robin.andersson@digiexam.se
-Kenneth Sundqvist	kenneth.sundqvist@digiexam.se</textarea></p>
 		</div>
 
 	</div>
@@ -83,8 +92,8 @@ Kenneth Sundqvist	kenneth.sundqvist@digiexam.se</textarea></p>
 	<script src="lib/angular.js"></script>
 
 	<!-- ng-paste-from -->
-	<script src="lib/ng-paste-from-latest.min.js"></script>
-	<!--<script src="lib/ng-paste-from-unstable.min.js"></script>-->
+	<!--<script src="lib/ng-paste-from-latest.min.js"></script>-->
+	<script src="lib/ng-paste-from-unstable.min.js"></script>
 
 	<!-- demo -->
 	<script src="dist/main.min.js"></script>

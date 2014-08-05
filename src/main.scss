@@ -44,6 +44,10 @@ textarea {
 	font: inherit;
 }
 
+p {
+	margin-bottom: $space;
+}
+
 .container {
 	margin: 0 auto;
 	max-width: 60em;
@@ -55,10 +59,6 @@ textarea {
 	h1 {
 		margin-bottom: $space * 2;
 		font: normal ($space * 2)#{"/"}1 $fontFamily-serif;
-	}
-
-	p {
-		margin-top: $space;
 	}
 }
 
@@ -83,10 +83,6 @@ textarea {
 
 	h3 {
 		font-weight: normal;
-	}
-	
-	p {
-		margin-bottom: $space;
 	}
 
 	ul {
