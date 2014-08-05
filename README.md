@@ -1,7 +1,10 @@
-ng-paste-from
-=============
+# ng-paste-from
 
-Directive to handle conversion of paste from Excel to scope, [demo](http://digiexam.github.io/ng-paste-from/) and [example implementation](https://github.com/DigiExam/ng-paste-from/tree/gh-pages).
+AngularJS directive that handles conversion of paste from Excel to scope.
+
+## Demo
+
+[Try a demo of ng-paste-from.](http://digiexam.github.io/ng-paste-from/)
 
 ## Example HTML
 
@@ -14,7 +17,7 @@ Directive to handle conversion of paste from Excel to scope, [demo](http://digie
 
 NOTE: It is important that the element that has the ng-paste-from directive supports newlines, otherwise they get excluded and the parse becomes invalid.
 
-## Bindings
+## Attributes
 
 | Attribute            | Type             | Description |
 | -------------------- | ---------------- | ----------- |
@@ -23,6 +26,31 @@ NOTE: It is important that the element that has the ng-paste-from directive supp
 | ng-paste-on-validate | function         | function to custom validate an object, signature onValidate(object, index), return true if valid. |
 | ng-paste-on-error    | function         | function to handle errors that occur when parsing the excel data. signature onError(error, index) |
 
-## Errors
+## Errors passed to the on error callback
 
-Errors that can occur are defined in the constant `ngPasteFromErrors`
+Error | Description
+--- | ---
+NGPASTEFROM_INVALID_COLUMN_LENGTH | The processed row does not have the correct number of columns 
+NGPASTEFROM_FAILED_VALIDATION | The processed row failed validation 
+
+## Getting started with development
+
+1. Install NodeJS ([nodejs.org](http://nodejs.org/))
+2. Install Gulp globally: `npm install -g gulp`
+3. Fork the repo and clone it. ([How to do it with GitHub.](https://help.github.com/articles/fork-a-repo))
+4. Go into the project folder: `cd ng-paste-from`
+5. Install the project dependencies: `npm install`
+6. Build the project files: `gulp`
+  * Build them whenever they change: `gulp watch`
+
+To make development of ng-paste-from easier you can check out the `master` branch in one directory and the `gh-pages` branch in another, then symlink the dist files from `master` into the `lib` directory in `gh-pages`, and change the includes in `index.html` to use those versions.
+
+## Browser compatability
+
+Chrome, Firefox, Safari and IE9+
+
+## License
+
+Licensed under [MIT](LICENSE)
+
+Copyright (C) 2014 DigiExam
