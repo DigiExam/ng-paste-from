@@ -71,9 +71,12 @@ Callback to manipulate paste data before it is parsed.
 ### `ng-paste-from-on-validate`
 
 * Type: `Function`
-* Signature: `onValidate(object, index)`
+* Signature: `onValidate(row, index)`
 
-Callback to validate an object.
+Callback to validate a row object or array.
+
+See the `ng-paste-from-columns` attribute for more details on when a row will
+be an object or an array.
 
 ### `ng-paste-from-on-error`
 
