@@ -5,7 +5,7 @@ angular.module "ngPasteFrom", []
 
 	.constant "ngPasteFromSeparators",
 		row: /\r\n|\n\r|\n|\r/g
-		column: /\t+/g
+		column: "\t"
 
 	.directive "ngPasteFrom", ->
 		restrict: "A"

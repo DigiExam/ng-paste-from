@@ -4,7 +4,7 @@
     failedValidation: "NGPASTEFROM_FAILED_VALIDATION"
   }).constant("ngPasteFromSeparators", {
     row: /\r\n|\n\r|\n|\r/g,
-    column: /\t+/g
+    column: "\t"
   }).directive("ngPasteFrom", function() {
     return {
       restrict: "A",

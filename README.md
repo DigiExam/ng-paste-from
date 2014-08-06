@@ -56,7 +56,7 @@ Used to split the pasted data into rows.
 ### `ng-paste-from-column-separator`
 
 * Type: `RegExp`, `String`
-* Default value: `/\t+/g`
+* Default value: `"\t"`
              
 Used to split the rows into columns.
 
