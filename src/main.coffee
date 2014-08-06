@@ -3,7 +3,7 @@ angular.module("app", ["ngPasteFrom"])
 		$scope.errors = []
 		$scope.users = []
 
-		$scope.onPaste = (data) ->
+		$scope.beforeParse = (data) ->
 			$scope.errors = []
 			data
 
