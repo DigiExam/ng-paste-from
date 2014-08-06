@@ -60,6 +60,13 @@ Used to split the pasted data into rows.
              
 Used to split the rows into columns.
 
+### `ng-paste-from-paste-only`
+
+* Type: `Boolean`
+* Default value: `true`
+             
+Only allow pasting into the source element.
+
 ### `ng-paste-from-before-parse`
 
 * Type: `Function`

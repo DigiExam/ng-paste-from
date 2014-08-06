@@ -13,6 +13,7 @@
         ngPasteFromColumns: "=",
         ngPasteFromRowSeparator: "=",
         ngPasteFromColumnSeparator: "=",
+        ngPasteFromPasteOnly: "=",
         ngPasteFromBeforeParse: "=",
         ngPasteFromOnValidate: "=",
         ngPasteFromOnError: "="
@@ -22,22 +23,32 @@
           console.error("Missing required attribute ngPasteFromColumns.");
         }
         $scope.pasteEvent = function(event) {
-          var clipboardData, data;
+          var clipboardData, data, _ref;
           clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData;
           data = clipboardData.getData("text/plain");
-          event.preventDefault();
           if (typeof $scope.ngPasteFromBeforeParse === "function") {
             data = $scope.ngPasteFromBeforeParse(data);
           }
           $scope.processPasteData(data);
-          return false;
+          if ((_ref = $scope.ngPasteFromPasteOnly) != null ? _ref : true) {
+            return event.preventDefault();
+          }
         };
-        $scope.clearSourceElementEvent = function() {
-          return element.val("");
+        $scope.changeEvent = function() {
+          var data, _ref;
+          if ((_ref = $scope.ngPasteFromPasteOnly) != null ? _ref : true) {
+            return element.val("");
+          } else {
+            data = element.val();
+            if (typeof $scope.ngPasteFromBeforeParse === "function") {
+              data = $scope.ngPasteFromBeforeParse(data);
+            }
+            return $scope.processPasteData(data);
+          }
         };
         element.on("paste", $scope.pasteEvent);
-        element.on("keyup", $scope.clearSourceElementEvent);
-        return element.on("change", $scope.clearSourceElementEvent);
+        element.on("keyup", $scope.changeEvent);
+        return element.on("change", $scope.changeEvent);
       },
       controller: function($scope, $filter, ngPasteFromErrors, ngPasteFromSeparators) {
         $scope.columnsToObject = function(columns) {

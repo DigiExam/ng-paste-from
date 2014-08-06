@@ -14,6 +14,7 @@ angular.module "ngPasteFrom", []
 			ngPasteFromColumns: "="
 			ngPasteFromRowSeparator: "="
 			ngPasteFromColumnSeparator: "="
+			ngPasteFromPasteOnly: "="
 			ngPasteFromBeforeParse: "="
 			ngPasteFromOnValidate: "="
 			ngPasteFromOnError: "="
@@ -25,18 +26,24 @@ angular.module "ngPasteFrom", []
 			$scope.pasteEvent = (event) ->
 				clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData
 				data = clipboardData.getData "text/plain"
-				event.preventDefault()
 				if typeof $scope.ngPasteFromBeforeParse is "function"
 					data = $scope.ngPasteFromBeforeParse data
 				$scope.processPasteData data
-				false
+				if $scope.ngPasteFromPasteOnly ? true
+					event.preventDefault()
 
-			$scope.clearSourceElementEvent = ->
-				element.val ""
+			$scope.changeEvent = ->
+				if $scope.ngPasteFromPasteOnly ? true
+					element.val ""
+				else
+					data = element.val()
+					if typeof $scope.ngPasteFromBeforeParse is "function"
+						data = $scope.ngPasteFromBeforeParse data
+					$scope.processPasteData data
 
 			element.on "paste", $scope.pasteEvent
-			element.on "keyup", $scope.clearSourceElementEvent
-			element.on "change", $scope.clearSourceElementEvent
+			element.on "keyup", $scope.changeEvent
+			element.on "change", $scope.changeEvent
 
 		controller: ($scope, $filter, ngPasteFromErrors, ngPasteFromSeparators) ->
 			$scope.columnsToObject = (columns) ->
