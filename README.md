@@ -60,13 +60,13 @@ Used to split the pasted data into rows.
              
 Used to split the rows into columns.
 
-### `ng-paste-from-on-paste`
+### `ng-paste-from-before-parse`
 
 * Type: `Function`
-* Signature: `onPaste(data)`
+* Signature: `beforeParse(data)`
 * **Return:** the data, or else nothing will be parsed.
 
-Callback to manipulate paste data before it is parsed.
+Callback to manipulate the data before it is parsed.
 
 ### `ng-paste-from-on-validate`
 

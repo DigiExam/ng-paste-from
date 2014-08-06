@@ -14,7 +14,7 @@ angular.module "ngPasteFrom", []
 			ngPasteFromColumns: "="
 			ngPasteFromRowSeparator: "="
 			ngPasteFromColumnSeparator: "="
-			ngPasteFromOnPaste: "="
+			ngPasteFromBeforeParse: "="
 			ngPasteFromOnValidate: "="
 			ngPasteFromOnError: "="
 
@@ -26,8 +26,8 @@ angular.module "ngPasteFrom", []
 				clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData
 				data = clipboardData.getData "text/plain"
 				event.preventDefault()
-				if typeof $scope.ngPasteFromOnPaste is "function"
-					data = $scope.ngPasteFromOnPaste data
+				if typeof $scope.ngPasteFromBeforeParse is "function"
+					data = $scope.ngPasteFromBeforeParse data
 				$scope.processPasteData data
 				false
 

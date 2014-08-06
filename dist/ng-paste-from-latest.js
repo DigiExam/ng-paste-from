@@ -13,7 +13,7 @@
         ngPasteFromColumns: "=",
         ngPasteFromRowSeparator: "=",
         ngPasteFromColumnSeparator: "=",
-        ngPasteFromOnPaste: "=",
+        ngPasteFromBeforeParse: "=",
         ngPasteFromOnValidate: "=",
         ngPasteFromOnError: "="
       },
@@ -26,8 +26,8 @@
           clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData;
           data = clipboardData.getData("text/plain");
           event.preventDefault();
-          if (typeof $scope.ngPasteFromOnPaste === "function") {
-            data = $scope.ngPasteFromOnPaste(data);
+          if (typeof $scope.ngPasteFromBeforeParse === "function") {
+            data = $scope.ngPasteFromBeforeParse(data);
           }
           $scope.processPasteData(data);
           return false;
