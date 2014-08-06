@@ -72,8 +72,8 @@ Kenneth Sundqvist	kenneth.sundqvist@digiexam.se</textarea>
 					</thead>
 					<tbody>
 						<tr ng-repeat="u in users">
-							<td>{{u.name}}</td>
-							<td>{{u.email}}</td>
+							<td>{{u.name || u[0]}}</td>
+							<td>{{u.email || u[1]}}</td>
 						</tr>
 					</tbody>
 				</table>
