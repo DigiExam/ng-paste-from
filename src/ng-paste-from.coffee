@@ -23,7 +23,7 @@ angular.module "ngPasteFrom", []
 				console.error "Missing required attribute ngPasteFromColumns."
 
 			$scope.pasteEvent = (event) ->
-				clipboardData = window.clipboardData ? event.clipboardData
+				clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData
 				data = clipboardData.getData "text/plain"
 				event.preventDefault()
 				if typeof $scope.ngPasteFromOnPaste is "function"

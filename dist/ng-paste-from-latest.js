@@ -22,8 +22,8 @@
           console.error("Missing required attribute ngPasteFromColumns.");
         }
         $scope.pasteEvent = function(event) {
-          var clipboardData, data, _ref;
-          clipboardData = (_ref = window.clipboardData) != null ? _ref : event.clipboardData;
+          var clipboardData, data;
+          clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData;
           data = clipboardData.getData("text/plain");
           event.preventDefault();
           if (typeof $scope.ngPasteFromOnPaste === "function") {
