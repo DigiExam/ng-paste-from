@@ -7,22 +7,23 @@ angular.module("app", ["ngPasteFrom"])
 			$scope.errors = []
 			data
 
-		$scope.onError = (error, index) ->
+		$scope.onError = (error, rowData) ->
 			if error is ngPasteFromErrors.invalidColumnLength
-				$scope.errors.push "Invalid column length on row " + (index + 1)
+				expectedColumns = "#{rowData.expectedLength} column#{if rowData.expectedLength > 1 then 's' else ''}"
+				$scope.errors.push "Line #{rowData.index + 1} should have #{expectedColumns}, but it had #{rowData.actualLength}: #{rowData.source}"
 
-		$scope.onValidate = (row, index) ->
+		$scope.onValidate = (row, rowData) ->
+			errors = []
 			isArray = row instanceof Array
 			name = if isArray then row[0] else row.name
 			email = if isArray then row[1] else row.email
 
 			if name.length == 0
-				$scope.errors.push "Name must be 1 char or longer on row: " + (index + 1)
-				return false
-
+				errors.push "Name on line #{rowData.index + 1} must be 1 character or longer."
 			if email.indexOf("@") == -1
-				$scope.errors.push "Email is invalid format on row: " + (index + 1)
-				return false
+				errors.push "E-mail on line #{rowData.index + 1} is not valid: #{rowData.source}"
 
-			return true
+			[].push.apply $scope.errors, errors
+
+			!errors.length
 
