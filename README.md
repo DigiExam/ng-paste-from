@@ -78,7 +78,14 @@ Callback to manipulate the data before it is parsed.
 ### `ng-paste-from-on-validate`
 
 * Type: `Function`
-* Signature: `onValidate(row, index)`
+* Signature: `onValidate(row, rowData)`
+* Arguments:
+  * row: (Object or Array) See the `ng-paste-from-columns` option for details on this value
+  * rowData: (Object)
+    * index: (Number, Int) Index of the row in the split source text, before trimming empty lines
+    * source: (String) Row source text
+    * expectedLength: (Number, Int) Expected number of columns in the row
+    * actualLength: (Number, Int) Actual number of columns in the row
 
 Callback to validate a row object or array.
 
@@ -88,7 +95,14 @@ be an object or an array.
 ### `ng-paste-from-on-error`
 
 * Type: `Function`
-* Signature: `onError(error, index)`
+* Signature: `onError(error, rowData)`
+* Arguments:
+  * error: (String) Name of the error, see the Errors section of this README
+  * rowData: (Object)
+    * index: (Number, Int) Index of the row in the split source text, before trimming empty lines
+    * source: (String) Row source text
+    * expectedLength: (Number, Int) Expected number of columns in the row
+    * actualLength: (Number, Int) Actual number of columns in the row
 
 Callback to handle errors.
 

@@ -53,7 +53,7 @@ angular.module "ngPasteFrom", []
 					obj[format[index]] = column
 				obj
 
-			$scope.getColumnsLength = ->
+			$scope.getExpectedColumnsLength = ->
 				if typeof $scope.ngPasteFromColumns is "number"
 					$scope.ngPasteFromColumns
 				else
@@ -65,7 +65,7 @@ angular.module "ngPasteFrom", []
 
 				rows = data.split $scope.ngPasteFromRowSeparator ? ngPasteFromSeparators.row
 				result = []
-				columnsLength = $scope.getColumnsLength()
+				expectedColumnsLength = $scope.getExpectedColumnsLength()
 
 				for row, index in rows
 					if row is ""
@@ -73,20 +73,26 @@ angular.module "ngPasteFrom", []
 
 					columns = row.split $scope.ngPasteFromColumnSeparator ? ngPasteFromSeparators.column
 
-					if columns.length isnt columnsLength
+					rowData =
+						index: index
+						source: row
+						expectedLength: expectedColumnsLength
+						actualLength: columns.length
+
+					if columns.length isnt expectedColumnsLength
 						if typeof $scope.ngPasteFromOnError is "function"
-							$scope.ngPasteFromOnError ngPasteFromErrors.invalidColumnLength, index
+							$scope.ngPasteFromOnError ngPasteFromErrors.invalidColumnLength, rowData
 						continue
 
 					if typeof $scope.ngPasteFromColumns is "number"
-						obj = columns
+						rowResult = columns
 					else
-						obj = $scope.columnsToObject columns
+						rowResult = $scope.columnsToObject columns
 
-					if typeof $scope.ngPasteFromOnValidate isnt "function" or $scope.ngPasteFromOnValidate obj, index
-						result.push obj
+					if typeof $scope.ngPasteFromOnValidate isnt "function" or $scope.ngPasteFromOnValidate rowResult, rowData
+						result.push rowResult
 					else if typeof $scope.ngPasteFromOnError is "function"
-						$scope.ngPasteFromOnError ngPasteFromErrors.failedValidation, index
+						$scope.ngPasteFromOnError ngPasteFromErrors.failedValidation, rowData
 
 				$scope.$apply ->
 					$scope.ngPasteFrom = result
