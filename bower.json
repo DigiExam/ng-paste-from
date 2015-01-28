@@ -1,6 +1,6 @@
 {
   "name": "ng-paste-from",
-  "version": "2.0.0",
+  "version": "3.0.0-rc.1",
   "homepage": "https://github.com/DigiExam/ng-paste-from",
   "authors": [    
     "(Robin Andersson <robin.andersson@digiexam.se>)",
@@ -22,6 +22,6 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular": "~1.2.6"
+    "angular": "~1.3.11"
   }
 }

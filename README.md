@@ -17,6 +17,12 @@ AngularJS directive that converts pasted plain text tabular data to an array of 
 
 NOTE: It is important that the element that has the ng-paste-from directive supports newlines, otherwise they get excluded and the parse becomes invalid.
 
+## Dependencies
+
+Major version 3 depends on Angular ~1.3.11.
+
+Major versions 1 and 2 depend on Angular ~1.2.6.
+
 ## Attributes
 
 ### `ng-paste-from`
