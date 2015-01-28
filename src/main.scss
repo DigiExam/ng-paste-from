@@ -16,6 +16,10 @@ $fontFamily-serif: Georgia, serif;
 
 $space: round($fontSize * $lineHeight);
 
+[ng-cloak] {
+	display: none !important;
+}
+
 *,
 *::before,
 *::after {
