@@ -23,9 +23,12 @@
           console.error("Missing required attribute ngPasteFromColumns.");
         }
         $scope.pasteEvent = function(event) {
-          var clipboardData, data, _ref;
-          clipboardData = window.clipboardData || event.clipboardData || event.originalEvent && event.originalEvent.clipboardData;
-          data = clipboardData.getData("text/plain");
+          var data, _ref;
+          if ((event.clipboardData != null) && (event.clipboardData.getData != null)) {
+            data = event.clipboardData.getData("text/plain");
+          } else if ((window.clipboardData != null) && (window.clipboardData.getData != null)) {
+            data = window.clipboardData.getData("Text");
+          }
           if (typeof $scope.ngPasteFromBeforeParse === "function") {
             data = $scope.ngPasteFromBeforeParse(data);
           }
