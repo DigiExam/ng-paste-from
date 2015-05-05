@@ -26,6 +26,8 @@ angular.module "ngPasteFrom", []
 			$scope.pasteEvent = (event) ->
 				if event.clipboardData? && event.clipboardData.getData? # Standard
 					data = event.clipboardData.getData "text/plain"
+				else if event.originalEvent? && event.originalEvent.clipboardData? && event.originalEvent.clipboardData.getData? # jQuery
+					data = event.originalEvent.clipboardData.getData "text/plain"
 				else if window.clipboardData? && window.clipboardData.getData? # Internet Explorer
 					data = window.clipboardData.getData "Text"
 
