@@ -26,6 +26,8 @@
           var data, _ref;
           if ((event.clipboardData != null) && (event.clipboardData.getData != null)) {
             data = event.clipboardData.getData("text/plain");
+          } else if ((event.originalEvent != null) && (event.originalEvent.clipboardData != null) && (event.originalEvent.clipboardData.getData != null)) {
+            data = event.originalEvent.clipboardData.getData("text/plain");
           } else if ((window.clipboardData != null) && (window.clipboardData.getData != null)) {
             data = window.clipboardData.getData("Text");
           }
