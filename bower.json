@@ -13,7 +13,7 @@
     "paste"
   ],
   "license": "MIT",
-  "private": true,
+  "private": false,
   "main": [
     "./dist/ng-paste-from-latest.min.js"
   ],
