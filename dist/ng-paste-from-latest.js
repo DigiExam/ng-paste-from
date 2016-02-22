@@ -15,7 +15,9 @@
         ngPasteFromColumnSeparator: "=",
         ngPasteFromPasteOnly: "=",
         ngPasteFromBeforeParse: "=",
+        ngPasteFromAfterParseRow: "=",
         ngPasteFromOnValidate: "=",
+        ngPasteFromOnSuccessBeforeApply: "=",
         ngPasteFromOnError: "="
       },
       link: function($scope, element, attrs) {
@@ -23,7 +25,7 @@
           console.error("Missing required attribute ngPasteFromColumns.");
         }
         $scope.pasteEvent = function(event) {
-          var data, _ref;
+          var data, ref;
           if ((event.clipboardData != null) && (event.clipboardData.getData != null)) {
             data = event.clipboardData.getData("text/plain");
           } else if ((event.originalEvent != null) && (event.originalEvent.clipboardData != null) && (event.originalEvent.clipboardData.getData != null)) {
@@ -35,13 +37,13 @@
             data = $scope.ngPasteFromBeforeParse(data);
           }
           $scope.processPasteData(data);
-          if ((_ref = $scope.ngPasteFromPasteOnly) != null ? _ref : true) {
+          if ((ref = $scope.ngPasteFromPasteOnly) != null ? ref : true) {
             return event.preventDefault();
           }
         };
         $scope.changeEvent = function() {
-          var data, _ref;
-          if ((_ref = $scope.ngPasteFromPasteOnly) != null ? _ref : true) {
+          var data, ref;
+          if ((ref = $scope.ngPasteFromPasteOnly) != null ? ref : true) {
             return element.val("");
           } else {
             data = element.val();
@@ -57,10 +59,10 @@
       },
       controller: function($scope, $filter, ngPasteFromErrors, ngPasteFromSeparators) {
         $scope.columnsToObject = function(columns) {
-          var column, format, index, obj, _i, _len;
+          var column, format, i, index, len, obj;
           obj = {};
           format = $scope.ngPasteFromColumns;
-          for (index = _i = 0, _len = columns.length; _i < _len; index = ++_i) {
+          for (index = i = 0, len = columns.length; i < len; index = ++i) {
             column = columns[index];
             obj[format[index]] = column;
           }
@@ -74,19 +76,19 @@
           }
         };
         return $scope.processPasteData = function(data) {
-          var columns, expectedColumnsLength, index, result, row, rowData, rowResult, rows, _i, _len, _ref, _ref1;
+          var columns, expectedColumnsLength, i, index, len, ref, ref1, result, row, rowData, rowResult, rows;
           if (!(data && data.length)) {
             return;
           }
-          rows = data.split((_ref = $scope.ngPasteFromRowSeparator) != null ? _ref : ngPasteFromSeparators.row);
+          rows = data.split((ref = $scope.ngPasteFromRowSeparator) != null ? ref : ngPasteFromSeparators.row);
           result = [];
           expectedColumnsLength = $scope.getExpectedColumnsLength();
-          for (index = _i = 0, _len = rows.length; _i < _len; index = ++_i) {
+          for (index = i = 0, len = rows.length; i < len; index = ++i) {
             row = rows[index];
             if (row === "") {
               continue;
             }
-            columns = row.split((_ref1 = $scope.ngPasteFromColumnSeparator) != null ? _ref1 : ngPasteFromSeparators.column);
+            columns = row.split((ref1 = $scope.ngPasteFromColumnSeparator) != null ? ref1 : ngPasteFromSeparators.column);
             rowData = {
               index: index,
               source: row,
@@ -105,10 +107,16 @@
               rowResult = $scope.columnsToObject(columns);
             }
             if (typeof $scope.ngPasteFromOnValidate !== "function" || $scope.ngPasteFromOnValidate(rowResult, rowData)) {
+              if (typeof $scope.ngPasteFromAfterParseRow === "function") {
+                rowResult = $scope.ngPasteFromAfterParseRow(rowResult);
+              }
               result.push(rowResult);
             } else if (typeof $scope.ngPasteFromOnError === "function") {
               $scope.ngPasteFromOnError(ngPasteFromErrors.failedValidation, rowData);
             }
+          }
+          if (typeof $scope.ngPasteFromOnSuccessBeforeApply === "function") {
+            $scope.ngPasteFromOnSuccessBeforeApply(result);
           }
           return $scope.$apply(function() {
             return $scope.ngPasteFrom = result;
