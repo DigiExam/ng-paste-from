@@ -98,7 +98,7 @@ angular.module "ngPasteFrom", []
 
 					if typeof $scope.ngPasteFromOnValidate isnt "function" or $scope.ngPasteFromOnValidate rowResult, rowData
 						if typeof $scope.ngPasteFromAfterParseRow is "function"
-							rowResult = $scope.ngPasteFromAfterParseRow rowResult rowData
+							rowResult = $scope.ngPasteFromAfterParseRow rowResult, rowData
 
 						result.push rowResult
 					else if typeof $scope.ngPasteFromOnError is "function"
