@@ -108,7 +108,7 @@
             }
             if (typeof $scope.ngPasteFromOnValidate !== "function" || $scope.ngPasteFromOnValidate(rowResult, rowData)) {
               if (typeof $scope.ngPasteFromAfterParseRow === "function") {
-                rowResult = $scope.ngPasteFromAfterParseRow(rowResult(rowData));
+                rowResult = $scope.ngPasteFromAfterParseRow(rowResult, rowData);
               }
               result.push(rowResult);
             } else if (typeof $scope.ngPasteFromOnError === "function") {
