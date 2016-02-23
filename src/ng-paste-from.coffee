@@ -18,7 +18,7 @@ angular.module "ngPasteFrom", []
 			ngPasteFromBeforeParse: "="
 			ngPasteFromAfterParseRow: "="
 			ngPasteFromOnValidate: "="
-			ngPasteFromOnSuccessBeforeApply: "="
+			ngPasteFromBeforeApply: "="
 			ngPasteFromOnError: "="
 
 		link: ($scope, element, attrs) ->
@@ -98,14 +98,14 @@ angular.module "ngPasteFrom", []
 
 					if typeof $scope.ngPasteFromOnValidate isnt "function" or $scope.ngPasteFromOnValidate rowResult, rowData
 						if typeof $scope.ngPasteFromAfterParseRow is "function"
-							rowResult = $scope.ngPasteFromAfterParseRow rowResult
+							rowResult = $scope.ngPasteFromAfterParseRow rowResult rowData
 
 						result.push rowResult
 					else if typeof $scope.ngPasteFromOnError is "function"
 						$scope.ngPasteFromOnError ngPasteFromErrors.failedValidation, rowData
 
-				if typeof $scope.ngPasteFromOnSuccessBeforeApply is "function"
-					$scope.ngPasteFromOnSuccessBeforeApply result
+				if typeof $scope.ngPasteFromBeforeApply is "function"
+					$scope.ngPasteFromBeforeApply result
 
 				$scope.$apply ->
 					$scope.ngPasteFrom = result

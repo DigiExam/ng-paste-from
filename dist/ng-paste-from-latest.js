@@ -17,7 +17,7 @@
         ngPasteFromBeforeParse: "=",
         ngPasteFromAfterParseRow: "=",
         ngPasteFromOnValidate: "=",
-        ngPasteFromOnSuccessBeforeApply: "=",
+        ngPasteFromBeforeApply: "=",
         ngPasteFromOnError: "="
       },
       link: function($scope, element, attrs) {
@@ -108,15 +108,15 @@
             }
             if (typeof $scope.ngPasteFromOnValidate !== "function" || $scope.ngPasteFromOnValidate(rowResult, rowData)) {
               if (typeof $scope.ngPasteFromAfterParseRow === "function") {
-                rowResult = $scope.ngPasteFromAfterParseRow(rowResult);
+                rowResult = $scope.ngPasteFromAfterParseRow(rowResult(rowData));
               }
               result.push(rowResult);
             } else if (typeof $scope.ngPasteFromOnError === "function") {
               $scope.ngPasteFromOnError(ngPasteFromErrors.failedValidation, rowData);
             }
           }
-          if (typeof $scope.ngPasteFromOnSuccessBeforeApply === "function") {
-            $scope.ngPasteFromOnSuccessBeforeApply(result);
+          if (typeof $scope.ngPasteFromBeforeApply === "function") {
+            $scope.ngPasteFromBeforeApply(result);
           }
           return $scope.$apply(function() {
             return $scope.ngPasteFrom = result;
