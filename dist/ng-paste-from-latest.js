@@ -11,6 +11,7 @@
       scope: {
         ngPasteFrom: "=",
         ngPasteFromColumns: "=",
+        ngPasteFromEnforceColumnCount: "=",
         ngPasteFromRowSeparator: "=",
         ngPasteFromColumnSeparator: "=",
         ngPasteFromPasteOnly: "=",
@@ -95,7 +96,7 @@
               expectedLength: expectedColumnsLength,
               actualLength: columns.length
             };
-            if (columns.length !== expectedColumnsLength) {
+            if ($scope.ngPasteFromEnforceColumnCount && columns.length !== expectedColumnsLength) {
               if (typeof $scope.ngPasteFromOnError === "function") {
                 $scope.ngPasteFromOnError(ngPasteFromErrors.invalidColumnLength, rowData);
               }
