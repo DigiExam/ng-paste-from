@@ -12,11 +12,14 @@ angular.module "ngPasteFrom", []
 		scope: 
 			ngPasteFrom: "="
 			ngPasteFromColumns: "="
+			ngPasteFromEnforceColumnCount: "="
 			ngPasteFromRowSeparator: "="
 			ngPasteFromColumnSeparator: "="
 			ngPasteFromPasteOnly: "="
 			ngPasteFromBeforeParse: "="
+			ngPasteFromAfterParseRow: "="
 			ngPasteFromOnValidate: "="
+			ngPasteFromBeforeApply: "="
 			ngPasteFromOnError: "="
 
 		link: ($scope, element, attrs) ->
@@ -84,7 +87,7 @@ angular.module "ngPasteFrom", []
 						expectedLength: expectedColumnsLength
 						actualLength: columns.length
 
-					if columns.length isnt expectedColumnsLength
+					if $scope.ngPasteFromEnforceColumnCount && columns.length isnt expectedColumnsLength
 						if typeof $scope.ngPasteFromOnError is "function"
 							$scope.ngPasteFromOnError ngPasteFromErrors.invalidColumnLength, rowData
 						continue
@@ -95,9 +98,15 @@ angular.module "ngPasteFrom", []
 						rowResult = $scope.columnsToObject columns
 
 					if typeof $scope.ngPasteFromOnValidate isnt "function" or $scope.ngPasteFromOnValidate rowResult, rowData
+						if typeof $scope.ngPasteFromAfterParseRow is "function"
+							rowResult = $scope.ngPasteFromAfterParseRow rowResult, rowData
+
 						result.push rowResult
 					else if typeof $scope.ngPasteFromOnError is "function"
 						$scope.ngPasteFromOnError ngPasteFromErrors.failedValidation, rowData
+
+				if typeof $scope.ngPasteFromBeforeApply is "function"
+					$scope.ngPasteFromBeforeApply result
 
 				$scope.$apply ->
 					$scope.ngPasteFrom = result
